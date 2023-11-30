@@ -7,11 +7,22 @@
             <button>Refresh</button>
             <Router-link to="/register">Register as a coach</router-link>
         </div>
-        <ul>LIST OF COACHES</ul>
+        <ul>
+            <li v-for="coach in filteredCoaches" :key="coach.id">
+                {{ coach.firstName }}
+            </li>
+        </ul>
     </section>
 </template>
 
-<script setup>
+<script>
+export default {
+    computed: {
+        filteredCoaches() {
+            return this.$store.getters['coaches/coaches']
+        }
+    }
+}
 
 </script>
 
