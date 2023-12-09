@@ -15,16 +15,16 @@
         <div class="form-control">
             <h3>Areas of expertice</h3>
             <div>
-                <label for="frontend">Frontend Development</label>
                 <input type="checkbox" id="frontend" value="frontend" v-model="areas">
+                <label for="frontend">Frontend Development</label>
             </div>
             <div>
-                <label for="backend">Backend Development</label>
                 <input type="checkbox" id="backend" value="backend" v-model="areas">
+                <label for="backend">Backend Development</label>
             </div>
             <div>
-                <label for="career">Career Advisory</label>
                 <input type="checkbox" id="career" value="career" v-model="areas">
+                <label for="career">Career Advisory</label>
             </div>
         </div>
         <div class="form-control">
