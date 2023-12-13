@@ -9,7 +9,7 @@ export default {
             hourlyRate: data.rate
         };
 
-        const response = await fetch(context.rootGetters.config.coaches + `/${userId}.json`, {
+        const response = await fetch(context.rootGetters.config.firebase + `/coaches/${userId}.json`, {
             method: 'PUT',
             body: JSON.stringify(coachData)
         });
@@ -26,7 +26,7 @@ export default {
         });
     },
     async loadCoaches(context) {
-        const response = await fetch(context.rootGetters.config.coaches + `.json`);
+        const response = await fetch(context.rootGetters.config.firebase + `/coaches.json`);
         const responseData = await response.json();
 
         if (!response.ok) {
