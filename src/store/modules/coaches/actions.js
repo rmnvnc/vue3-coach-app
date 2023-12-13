@@ -25,11 +25,11 @@ export default {
             id: userId
         });
     },
-    async loadCoaches(context) {
+    async loadCoaches(context, payload) {
         // compare last fetch timestamp with actual timestamp
         const lastFetch = context.getters.lastFetchGetter;
         const currentTimeStamp = new Date().getTime();
-        if (lastFetch && ((currentTimeStamp - lastFetch) / 1000 < 60)) {
+        if (lastFetch && ((currentTimeStamp - lastFetch) / 1000 < 60) && !payload.forceRefresh) {
             return;
         }
 
