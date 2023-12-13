@@ -26,6 +26,13 @@ export default {
         });
     },
     async loadCoaches(context) {
+        // compare last fetch timestamp with actual timestamp
+        const lastFetch = context.getters.lastFetchGetter;
+        const currentTimeStamp = new Date().getTime();
+        if (lastFetch && ((currentTimeStamp - lastFetch) / 1000 < 60)) {
+            return;
+        }
+
         const response = await fetch(context.rootGetters.config.firebase + `/coaches.json`);
         const responseData = await response.json();
 
@@ -36,7 +43,7 @@ export default {
 
         const coaches = [];
         for (const key in responseData) {
-            const coach =   {
+            const coach = {
                 id: key,
                 firstName: responseData[key].firstName,
                 lastName: responseData[key].lastName,
@@ -47,8 +54,7 @@ export default {
             coaches.push(coach);
         }
 
-        context.commit('setCoaches', coaches)
-
-
+        context.commit('setCoaches', coaches);
+        context.commit('setFetchTimestamp');
     }
 };
