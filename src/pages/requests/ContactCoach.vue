@@ -46,7 +46,7 @@ export default {
 
 <style scoped>
 form {
-  margin: 1rem;
+  margin-top: 1rem;
   border: 1px solid #ccc;
   border-radius: 12px;
   padding: 1rem;

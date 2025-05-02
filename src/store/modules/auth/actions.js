@@ -1,0 +1,31 @@
+export default {
+    login() {},
+    async signup(context, payload) {
+        console.log("SIGNUP ACTION")
+        const response = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${context.rootGetters.config.firebaseAPIkey}`, {
+            method: 'POST',
+            body: JSON.stringify({
+                email: payload.email,
+                password: payload.password,
+                returnSecureToken: true
+            })
+        });
+
+        const responseData = await response.json();
+
+        if (!response.ok) {
+            console.log(responseData);
+            const error = new Error(responseData.message || 'Failet to authenticate.')
+            throw error;
+        }
+
+        console.log(responseData);
+
+        context.commit('setUser', {
+            token: responseData.idToken,
+            usetId: responseData.localId,
+            tokenExpiration: responseData.expiresIn
+        })
+
+    }
+};

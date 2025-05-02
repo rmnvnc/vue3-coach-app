@@ -4,22 +4,20 @@ import config from '../config.js'
 
 import coachesModule from './modules/coaches/index.js'
 import requestsModule from './modules/requests/index.js'
+import authModule from './modules/auth/index.js'
 
 const store = createStore({
     modules: {
         coaches: coachesModule,
-        requests: requestsModule
+        requests: requestsModule,
+        auth: authModule
     },
     state() {
         return {
-            userId: 'c3',
             config
         }
     },
     getters: {
-        userId(state) {
-            return state.userId;
-        },
         config(state) {
             return state.config;
         }
