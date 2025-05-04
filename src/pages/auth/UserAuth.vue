@@ -1,24 +1,33 @@
 <template>
-    <base-card>
-        <form @submit.prevent="submitForm">
-            <div class="form-control" :class="{invalid: !email.isValid}">
-                <label for="email">E-mail</label>
-                <p v-if="!email.isValid">Please enter a valid email.</p>
-                <input type="email" id="email" v-model.trim="email.val" @blur="clearValidity('email')">
-            </div>
-            <div class="form-control" :class="{invalid: !password.isValid}">
-                <label for="password">Password</label>
-                <p v-if="!password.isValid">Password must be at least 6 characters long.</p>
-                <input type="password" id="password" v-model.trim="password.val" @blur="clearValidity('password')">
-            </div>
-            <base-button>{{submitButtonCaption}}</base-button>
-            <base-button type="button" @click="switchAuthMode" mode="flat">{{switchModeButtonCaption}}</base-button>
+    <div>
+        <base-dialog :show="!!error" title="An error occured" @close="handleError">
+            <p>{{ error }}</p>
+        </base-dialog>
+        <base-dialog :show="isLoading" title="Authenticating..." fixed>
+            <base-spinner></base-spinner>
+        </base-dialog>
+        <base-card>
+            <form @submit.prevent="submitForm">
+                <div class="form-control" :class="{invalid: !email.isValid}">
+                    <label for="email">E-mail</label>
+                    <p v-if="!email.isValid">Please enter a valid email.</p>
+                    <input type="email" id="email" v-model.trim="email.val" @blur="clearValidity('email')">
+                </div>
+                <div class="form-control" :class="{invalid: !password.isValid}">
+                    <label for="password">Password</label>
+                    <p v-if="!password.isValid">Password must be at least 6 characters long.</p>
+                    <input type="password" id="password" v-model.trim="password.val" @blur="clearValidity('password')">
+                </div>
+                <base-button>{{submitButtonCaption}}</base-button>
+                <base-button type="button" @click="switchAuthMode" mode="flat">{{switchModeButtonCaption}}</base-button>
 
-        </form>
-    </base-card>
+            </form>
+        </base-card>
+    </div>
 </template>
 
 <script>
+
 export default{
     data() {
         return {
@@ -31,7 +40,9 @@ export default{
                 isValid: true
             },
             formIsValid: true,
-            mode: 'login'
+            mode: 'login',
+            isLoading: false,
+            error: null
         };
     },
     computed: {
@@ -65,21 +76,30 @@ export default{
                 this.formIsValid = false;
             }
         },
-        submitForm() {
+        async submitForm() {
             this.validateForm();
 
             if (!this.formIsValid) {
                 return;
             }
-            console.log(this.mode)
-            if (this.mode === 'login') {
-                // ...
-            } else {
-                this.$store.dispatch('signup', {
-                    email: this.email.val,
-                    password: this.password.val
-                });
+            
+            this.isLoading = true;
+
+            try {
+                if (this.mode === 'login') {
+                    // ...
+                } else {
+                    await this.$store.dispatch('signup', {
+                        email: this.email.val,
+                        password: this.password.val
+                    });
+                }
+            } catch (err) {
+                this.error = err.message || 'Failed to authenticate, try later';
             }
+
+
+            this.isLoading = false;
         },
         switchAuthMode() {
             if (this.mode === 'login') {
@@ -87,7 +107,11 @@ export default{
             } else {
                 this.mode = 'login';
             }
+        },
+        handleError() {
+            this.error = null;
         }
+        
     }
 }
 </script>
