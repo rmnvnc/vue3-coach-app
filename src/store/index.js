@@ -1,7 +1,5 @@
 import {createStore} from "vuex";
 
-import config from '../config.js'
-
 import coachesModule from './modules/coaches/index.js'
 import requestsModule from './modules/requests/index.js'
 import authModule from './modules/auth/index.js'
@@ -14,7 +12,10 @@ const store = createStore({
     },
     state() {
         return {
-            config
+            config: {
+                firebase: process.env.VUE_APP_FIREBASE_DB,
+                firebaseAPIkey: process.env.VUE_APP_FIREBASE_API_KEY
+            }
         }
     },
     getters: {
