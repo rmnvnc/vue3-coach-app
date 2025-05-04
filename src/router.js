@@ -16,7 +16,7 @@ const router = createRouter({
         { path: '/', redirect: '/coaches' },
         { path: '/coaches', component: CoachesList },
         { path: '/coaches/:id', component: CoachDetail, props: true, children: [
-            {path: 'contact', component: ContactCoach}, // /coachces/c1/contact
+            {path: 'contact', component: ContactCoach}, // /coaches/c1/contact
         ] },
         { path: '/register', component: CoachRegistration, meta: { requiresAuth: true} },
         { path: '/requests', component: RequestReceived, meta: { requiresAuth: true} },
