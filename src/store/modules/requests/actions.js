@@ -5,7 +5,9 @@ export default {
             message: payload.message
         };
 
-        const response = await fetch(context.rootGetters.config.firebase + `/requests/${payload.coachId}.json`, {
+        const token = context.rootGetters.token; 
+
+        const response = await fetch(context.rootGetters.config.firebase + `/requests/${payload.coachId}.json?auth=${token}`, {
             method: 'POST',
             body: JSON.stringify(newRequest)
         });
