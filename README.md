@@ -2,6 +2,7 @@
 
 A Vue 3 application that allows users to register and find coaches. It uses Firebase for data storage and authentication, and includes protected routes, form validation, and dynamic routing.
 
+[Available](https://coach-app-new.web.app/coaches)
 ---
 
 ## 🚀 Features
