@@ -1,4 +1,10 @@
 <template>
+    <base-dialog :show="!!error" title="An error occured" @close="handleError">
+        <p>{{ error }}</p>
+    </base-dialog>
+    <base-dialog :show="isLoading" title="Authenticating..." fixed>
+        <base-spinner></base-spinner>
+    </base-dialog>
     <form @submit.prevent="submitForm">
         <div class="form-control">
             <label for="email">Your E-Mail</label>
@@ -21,23 +27,44 @@ export default {
         return {
             email: '',
             message: '',
-            formIsValid: true
+            formIsValid: true,
+            isLoading: false,
+            error: null
         }
     },
     methods: {
-        submitForm() {
+        async submitForm() {
             this.formIsValid = true;
+            this.isLoading = true;
+
             if (this.email === '' || !this.email.includes('@') || this.message === '') {
                 this.formIsValid = false;
+                this.isLoading = false;
                 return;
             }
+
             this.$store.dispatch('requests/contactCoach', {
                 email: this.email,
                 message: this.message,
                 coachId: this.$route.params.id
             });
 
-            this.$router.replace('/coaches')
+            try {
+                await this.$store.dispatch('requests/contactCoach', {
+                    email: this.email,
+                    message: this.message,
+                    coachId: this.$route.params.id
+                });
+
+                this.$router.replace('/coaches');
+            } catch (err) {
+                this.error = err.message || 'Failed to send request';
+            } finally {
+                this.isLoading = false;
+            }
+        },
+        handleError() {
+            this.error = null;
         }
     }
 }

@@ -19,7 +19,8 @@
                 <base-card>
                     <header>
                         <h2>Interested? Reach out now!</h2>
-                        <base-button link :to="contactLink" v-if="!isContactPage">Contact</base-button>
+                        <base-button to="/register" link v-if="!isLoggedIn">Log in to contact</base-button>
+                        <base-button :to="contactLink" link v-if="isLoggedIn && !isContactPage">Contact</base-button>
                     </header>
                     <router-view></router-view>
                 </base-card>
@@ -66,6 +67,9 @@ export default {
         },
         isContactPage() {
             return this.$route.path.endsWith('/contact');
+        },
+        isLoggedIn() {
+            return this.$store.getters.isAuthenticated;
         }
     },
     async created() {

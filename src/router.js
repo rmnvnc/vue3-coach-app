@@ -22,7 +22,7 @@ const router = createRouter({
         { path: '/', redirect: '/coaches' },
         { path: '/coaches', component: CoachesList },
         { path: '/coaches/:id', component: CoachDetail, props: true, children: [
-            {path: 'contact', component: ContactCoach}, // /coaches/c1/contact
+            {path: 'contact', component: ContactCoach, meta: { requiresAuth: true}}, // /coaches/c1/contact
         ] },
         { path: '/register', component: CoachRegistration, meta: { requiresAuth: true} },
         { path: '/requests', component: RequestReceived, meta: { requiresAuth: true} },
@@ -33,7 +33,12 @@ const router = createRouter({
 
 router.beforeEach(function(to, _, next) {
     if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
-        next('/auth');
+        if (to.path.includes('/contact')) {
+            const coachId = to.params.id;
+            next(`/coaches/${coachId}`);
+        } else {
+            next('/auth');
+        }
     } else if (to.meta.requiresUnauth && store.getters.isAuthenticated) {
         next('/coaches');
     } else {
