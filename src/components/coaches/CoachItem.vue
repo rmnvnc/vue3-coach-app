@@ -6,7 +6,7 @@
             <base-badge v-for="area in areas" :key="area" :title="area"  :type="area"></base-badge>
         </div>
         <div class="actions">
-            <base-button mode="outline" to="/register" link v-if="!isLoggedIn">Log in to contact coach</base-button>
+            <base-button mode="outline" to="/auth" link v-if="!isLoggedIn">Log in to contact coach</base-button>
             <base-button mode="outline" :to="coachContactLink" link v-if="isLoggedIn">Contact</base-button>
             <base-button :to="coachDetailsLink" link>View Details</base-button>
         </div>
