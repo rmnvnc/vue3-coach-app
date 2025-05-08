@@ -13,8 +13,8 @@ const store = createStore({
     state() {
         return {
             config: {
-                firebase: process.env.VUE_APP_FIREBASE_DB,
-                firebaseAPIkey: process.env.VUE_APP_FIREBASE_API_KEY
+                firebase: import.meta.env.VITE_FIREBASE_DB,
+                firebaseAPIkey: import.meta.env.VITE_FIREBASE_API_KEY
             }
         }
     },
