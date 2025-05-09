@@ -42,6 +42,34 @@ These will be introduced after completing the core features:
 - TypeScript – for static typing and better DX
 - CMS integration (Netlify CMS or Storyblok)
 - Nuxt 3 – for SSR, file-based routing, and hybrid hosting (marketing + app)
+- [Vercel](https://vercel.com/) – for secure deployment and environment variable management
+
+
+---
+
+Ak chceš, môžem ti aj pripraviť stručný anglický návod, ako nasadiť tvoju Vite/Vue appku na Vercel vrátane .env nastavení. Chceš?
+
+Jasné! Tu máš odporúčaný zápis pre sekciu Planned Technologies v angličtine, vrátane Vercelu:
+
+## 🧭 Planned Technologies
+
+These will be introduced after completing the core features:
+
+- [x] Vite – faster build tool (replacing Webpack)
+- [ ] Pinia – modern state management (replacing Vuex)
+- [ ] Composition API – to modularize logic into composables (replacing Options API)
+- [ ] `<script setup>` syntax – for cleaner and more concise components
+- [ ] TypeScript – for static typing and better DX
+- [ ] CMS integration (Netlify CMS or Storyblok)
+- [ ] Nuxt 3 – for SSR, file-based routing, and hybrid rendering (marketing + app)
+- [ ] [Vercel](https://vercel.com/) – for secure deployment and environment variable management
+
+
+---
+
+Ak chceš, môžem ti aj pripraviť stručný anglický návod, ako nasadiť tvoju Vite/Vue appku na Vercel vrátane .env nastavení. Chceš?
+
+
 
 ---
 
