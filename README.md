@@ -56,7 +56,7 @@ npm install
 ## 🧪 Run for Development
 
 ```
-npm run serve
+npm run dev
 ```
 
 ---
@@ -67,23 +67,6 @@ npm run serve
 npm run build
 ```
 
-> ⚠️ **Node.js Compatibility Issue**  
-> If you're using **Node.js version 17 or higher**, you may encounter a build error due to OpenSSL changes.  
-> You can fix it temporarily by running:
-
-```
-# Linux / macOS
-NODE_OPTIONS=--openssl-legacy-provider npm run build
-
-# Windows CMD
-set NODE_OPTIONS=--openssl-legacy-provider && npm run build
-
-# Windows PowerShell
-$env:NODE_OPTIONS="--openssl-legacy-provider"; npm run build
-```
-
-> ✅ Recommended solution: Use **Node.js v16.x** via [nvm](https://github.com/coreybutler/nvm-windows) or install manually.
-
 ---
 
 ## 🔑 Environment Variables
@@ -91,8 +74,8 @@ $env:NODE_OPTIONS="--openssl-legacy-provider"; npm run build
 Create a `.env.local` file in your root folder and add:
 
 ```
-VUE_APP_FIREBASE_DB=https://your-project.firebaseio.com
-VUE_APP_FIREBASE_API_KEY=your-api-key
+VITE_FIREBASE_DB=https://your-project.firebaseio.com
+VITE_FIREBASE_API_KEY=your-api-key
 ```
 
 These values are injected at build time. Do **not** store secrets here.
