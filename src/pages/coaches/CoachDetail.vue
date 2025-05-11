@@ -1,5 +1,8 @@
 <template>
     <div>
+        <base-dialog :show="!!error" title="An error ocured" @close="handleError">
+            <p>{{ error }}</p>
+        </base-dialog>
         <section v-if="isLoading">
             <base-card>
                 <base-spinner></base-spinner>
@@ -35,65 +38,54 @@
     </div>
 </template>
 
-<script>
-export default {
-    props: ['id'],
-    data() {
-        return {
-            isLoading: false,
-            selectedCoach: null
-        }
-    },
-    methods: {
-        loadCoach() {
-            this.selectedCoach = this.$store.getters['coaches/coaches'].find((coach) => coach.id === this.id);
-        }
-    },
-    computed: {
-        fullName() {
-            return this.selectedCoach.firstName + ' ' + this.selectedCoach.lastName
-        },
-        areas() {
-            return this.selectedCoach.areas;
-        },
-        rate() {
-            return this.selectedCoach.hourlyRate;
-        },
-        description() {
-            return this.selectedCoach.description;
-        },
-        contactLink() {
-            return this.$route.path + '/contact'
-        },
-        isContactPage() {
-            return this.$route.path.endsWith('/contact');
-        },
-        isLoggedIn() {
-            return this.$store.getters.isAuthenticated;
-        }
-    },
-    async created() {
-        this.isLoading = true;
+<script setup>
+    import { ref, computed, onMounted } from 'vue'
+    import { useRoute } from 'vue-router'
+    import { useCoachesStore } from '@/stores/coaches'
+    import { useAuthStore } from '@/stores/auth'
 
-        if (!this.$store.getters['coaches/hasCoaches']) {
+
+    const auth = useAuthStore()
+    const coaches = useCoachesStore()
+    const route = useRoute()
+    const id = computed(() => route.params.id)
+    const error = ref(null)
+
+    const isLoading = ref(true)
+    
+    const selectedCoach = computed(() => 
+        coaches.coaches.find(coach => coach.id === id.value)
+    )
+
+    const handleError = () => {
+        error.value = null
+    }
+
+    const fullName = computed(() => {
+        if (!selectedCoach.value) return ''
+        return selectedCoach.value.firstName + ' ' + selectedCoach.value.lastName
+    })
+
+    const areas = computed(() => selectedCoach.value?.areas || [])
+    const rate = computed(() => selectedCoach.value?.hourlyRate || 0)
+    const description = computed(() => selectedCoach.value?.description || '')
+    const contactLink = computed(() => route.path + '/contact')
+    const isContactPage = computed(() => route.path.endsWith('/contact'))
+    const isLoggedIn = computed(() => auth.isAuthenticated)
+
+    onMounted(async () => {
+        if (!coaches.hasCoaches.value) {
             try {
-                await this.$store.dispatch('coaches/loadCoaches');
+                await coaches.loadCoaches()
             } catch (err) {
-                this.error = 'Failed to load coach data.';
+                error.value = err.message || 'Failed to load coach data.'
             }
         }
-
-        this.loadCoach();
-        this.isLoading = false;
-    },
-    watch: {
-        $route() {
-            this.loadCoach();
-        },
-    },
-}
+        isLoading.value = false
+    })
 
 </script>
+
 
 <style scoped>
 

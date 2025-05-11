@@ -21,54 +21,53 @@
     </form>
 </template>
 
-<script>
-export default {
-    data() {
-        return {
-            email: '',
-            message: '',
-            formIsValid: true,
-            isLoading: false,
-            error: null
-        }
-    },
-    methods: {
-        async submitForm() {
-            this.formIsValid = true;
-            this.isLoading = true;
+<script setup>
+import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { useRequestsStore } from '@/stores/requests'
 
-            if (this.email === '' || !this.email.includes('@') || this.message === '') {
-                this.formIsValid = false;
-                this.isLoading = false;
-                return;
-            }
+const email = ref('')
+const message = ref('')
+const formIsValid = ref(true)
+const isLoading = ref(false)
+const error = ref(null)
 
-            this.$store.dispatch('requests/contactCoach', {
-                email: this.email,
-                message: this.message,
-                coachId: this.$route.params.id
-            });
+const route = useRoute()
+const router = useRouter()
+const requestsStore = useRequestsStore()
 
-            try {
-                await this.$store.dispatch('requests/contactCoach', {
-                    email: this.email,
-                    message: this.message,
-                    coachId: this.$route.params.id
-                });
+async function submitForm() {
+    formIsValid.value = true
+    isLoading.value = true
 
-                this.$router.replace('/coaches');
-            } catch (err) {
-                this.error = err.message || 'Failed to send request';
-            } finally {
-                this.isLoading = false;
-            }
-        },
-        handleError() {
-            this.error = null;
-        }
+    if (
+        email.value.trim() === '' ||
+        !email.value.includes('@') ||
+        message.value.trim() === ''
+    ) {
+        formIsValid.value = false
+        isLoading.value = false
+        return
+    }
+
+    try {
+        await requestsStore.contactCoach({
+            email: email.value,
+            message: message.value,
+            coachId: route.params.id
+        })
+
+        router.replace('/coaches')
+    } catch (err) {
+        error.value = err.message || 'Failed to send request'
+    } finally {
+        isLoading.value = false
     }
 }
 
+function handleError() {
+    error.value = null
+}
 </script>
 
 <style scoped>

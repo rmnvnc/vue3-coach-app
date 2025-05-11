@@ -26,98 +26,99 @@
     </div>
 </template>
 
-<script>
+<script setup> 
+    import {reactive, ref, computed} from 'vue';
+    import { useAuthStore } from '@/stores/auth';
+    import { useRouter, useRoute } from 'vue-router'
 
-export default{
-    data() {
-        return {
-            email: {
-                val: '',
-                isValid: true
-            },
-            password: {
-                val: '',
-                isValid: true
-            },
-            formIsValid: true,
-            mode: 'login',
-            isLoading: false,
-            error: null
-        };
-    },
-    computed: {
-        submitButtonCaption() {
-            if (this.mode === 'login') {
-                return 'Login';
-            } else {
-                return 'Signup';
-            }
-        },
-        switchModeButtonCaption() {
-            if (this.mode === 'login') {
-                return 'Signup instead';
-            } else {
-                return 'Login instead';
-            }
+    const auth = useAuthStore();
+    const router = useRouter();
+    const route = useRoute();
+
+    const email = reactive({
+        val: '',
+        isValid: true
+    })
+    const password = reactive({
+        val: '',
+        isValid: true
+    })
+    const formIsValid = ref(true)
+    const mode = ref('login')
+    const isLoading = ref(false)
+    const error = ref(null)
+
+    const submitButtonCaption = computed(() => {
+        if (mode.value === 'login') {
+            return 'Login';
+        } else {
+            return 'Signup';
         }
-    },
-    methods: {
-        clearValidity(input) {
-            this[input].isValid = true
-        },
-        validateForm() {
-            this.formIsValid = true;
-            if (this.email.val === '' && !this.email.val.includes('@') ) {
-                this.email.isValid = false;
-                this.formIsValid = false;
-            }
-            if (this.password.val === '' || this.password.val.length < 6) {
-                this.password.isValid = false;
-                this.formIsValid = false;
-            }
-        },
-        async submitForm() {
-            this.validateForm();
+    })
 
-            if (!this.formIsValid) {
-                return;
-            }
-            
-            this.isLoading = true;
+    const switchModeButtonCaption = computed (() => {
+        if (mode.value === 'login') {
+            return 'Signup instead';
+        } else {
+            return 'Login instead';
+        }
+    })
 
-            const actionPayload = {
-                email: this.email.val,
-                password: this.password.val
-            };
+    function clearValidity(input) {
+        [input].isValid = true;
+    }
 
-            try {
-                if (this.mode === 'login') {
-                    await this.$store.dispatch('login', actionPayload);
-                } else {
-                    await this.$store.dispatch('signup', actionPayload);
-                }
-                const redirectURl = '/' + (this.$route.query.redirect || 'coaches');
-                this.$router.replace(redirectURl)
-            } catch (err) {
-                this.error = err.message || 'Failed to authenticate, try later';
-            }
+    function validateForm() {
+        formIsValid.value = true;
+        if (email.val === '' && !email.val.includes('@') ) {
+            email.isValid = false;
+            formIsValid.value = false;
+        }
+        if (password.val === '' || password.val.length < 6) {
+            password.isValid = false;
+            formIsValid.value = false;
+        }
+    }
 
+    function switchAuthMode() {
+        if (mode.value === 'login') {
+            mode.value = 'signup';
+        } else {
+            mode.value = 'login';
+        }
+     }
+    function handleError() {
+        error.value = null;
+    }
 
-            this.isLoading = false;
-        },
-        switchAuthMode() {
-            if (this.mode === 'login') {
-                this.mode = 'signup';
-            } else {
-                this.mode = 'login';
-            }
-        },
-        handleError() {
-            this.error = null;
+    const submitForm = async () => {
+        validateForm();
+
+        if (!formIsValid.value) {
+            return;
         }
         
+        isLoading.value = true;
+
+        const actionPayload = {
+            email: email.val,
+            password: password.val
+        };
+
+        try {
+            if (mode.value === 'login') {
+                await auth.login(actionPayload);
+               
+            } else {
+                await auth.signup(actionPayload);
+            }
+            const redirectURl = '/' + (route.query.redirect || 'coaches');
+            router.replace(redirectURl)
+        } catch (err) {
+            error.value = err.message || 'Failed to authenticate, try later';
+        }
+        isLoading.value = false;
     }
-}
 </script>
 
 <style scoped>

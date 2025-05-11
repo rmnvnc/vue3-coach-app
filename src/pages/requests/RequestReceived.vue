@@ -22,47 +22,32 @@
     </div>
 </template>
 
-<script>
-import RequestItem from '../../components/requests/RequestItem.vue';
+<script setup>
+import { ref, onMounted } from 'vue'
+import { useRequestsStore } from '@/stores/requests'
+import RequestItem from '@/components/requests/RequestItem.vue'
 
-export default {
-    components: {
-        RequestItem
-    },
-    data() {
-        return {
-            isLoading: false,
-            error: null
-        }
-    },
-    computed: {
-        receivedRequests() {
-            return this.$store.getters['requests/requests'];
-        },
-        hasRequests() {
-            return this.$store.getters['requests/hasRequests'];
-        }
-    },
-    created() {
-        this.loadRequests();
-    },
-    methods: {
-        async loadRequests() {
-            this.isLoading = true;
-            try {
-                await this.$store.dispatch('requests/fetchRequests') 
-            } catch (error) {
-                this.error = error.message || 'Something went wrong';
-            }
-            
-            this.isLoading = false;
-        },
-        handleError() {
-            this.error = null;
-        }
-    }
+const requests = useRequestsStore()
+
+const isLoading = ref(false)
+const error = ref(null)
+
+const receivedRequests = requests.filteredRequests
+const hasRequests = requests.hasRequests
+
+onMounted(async () => {
+  isLoading.value = true
+  try {
+    await requests.fetchRequests()
+  } catch (err) {
+    error.value = err.message || 'Something went wrong'
+  }
+  isLoading.value = false
+})
+
+function handleError() {
+  error.value = null
 }
-
 </script>
 
 <style scoped>
