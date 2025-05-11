@@ -23,9 +23,9 @@ A Vue 3 application that allows users to register and find coaches. It uses Fire
 
 - [Vue 3](https://vuejs.org/) 
 - [Vite](https://vitejs.dev/) - (migrated from Vue CLI + Webpack)
-- Options API
+- Composition API - (migrated from Options API)
 - Vue Router
-- Vuex 
+- [Pinia](https://pinia.vuejs.org/) - (Migrated from Vuex) 
 - Firebase (realtime DB)
 - SCSS for styling
 
@@ -35,10 +35,10 @@ A Vue 3 application that allows users to register and find coaches. It uses Fire
 
 These will be introduced after completing the core features:
 
-- [Pinia](https://pinia.vuejs.org/) – modern state management (replacement for Vuex)
+- ~~[Pinia](https://pinia.vuejs.org/) – modern state management (replacement for Vuex)~~
 - ~~[Vite](https://vitejs.dev/) – faster build tool (replacement for Webpack)~~
-- Composition API – to restructure logic into composables (replacement for Options API)
-- `<script setup>` syntax – for cleaner and more concise components
+- ~~Composition API – to restructure logic into composables (replacement for Options API)~~
+- ~~`<script setup>` syntax – for cleaner and more concise components~~
 - TypeScript – for static typing and better DX
 - CMS integration (Netlify CMS or Storyblok)
 - Nuxt 3 – for SSR, file-based routing, and hybrid hosting (marketing + app)
