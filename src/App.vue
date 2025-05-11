@@ -24,7 +24,7 @@
     const didAutoLogout = computed(() => auth.didAutoLogout)
 
     watch(didAutoLogout, (newVal, oldVal) => {
-        if (curValue && newVal !== oldVal) {
+        if (newVal && newVal !== oldVal) {
             router.replace('/coaches')
         }
     })
