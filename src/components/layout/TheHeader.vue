@@ -18,20 +18,20 @@
     </header>
 </template>
 
-<script>
-export default {
-    computed: {
-        isLoggedIn() {
-            return this.$store.getters.isAuthenticated;
-        }
-    },
-    methods: {
-        logout() {
-            this.$store.dispatch('logout');
-            this.$router.replace('/coaches')
-        }
+<script setup>
+    import { computed } from 'vue'
+    import { useRouter } from 'vue-router'
+    import { useAuthStore } from '@/stores/auth'
+
+    const auth = useAuthStore()
+    const router = useRouter()
+
+    const isLoggedIn = computed(() => auth.isAuthenticated)
+
+    const logout = () => {
+        auth.logout()
+        router.replace('/coaches')
     }
-}
 </script>
 
 <style scoped>

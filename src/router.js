@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
-
+import { useAuthStore } from '@/stores/auth'
 
 // import CoachDetail from './pages/coaches/CoachDetail.vue';
 import CoachesList from './pages/coaches/CoachesList.vue';
@@ -8,7 +8,6 @@ import CoachesList from './pages/coaches/CoachesList.vue';
 // import RequestReceived from './pages/requests/RequestReceived.vue';
 import NotFound from './pages/NotFound.vue';
 // import UserAuth from './pages/auth/UserAuth.vue';
-import store from './store/index.js';
 
 const CoachDetail = () => import('./pages/coaches/CoachDetail.vue');
 const CoachRegistration = () => import('./pages/coaches/CoachRegistration.vue');
@@ -32,14 +31,16 @@ const router = createRouter({
 })
 
 router.beforeEach(function(to, _, next) {
-    if (to.meta.requiresAuth && !store.getters.isAuthenticated) {
+    const auth = useAuthStore()
+
+    if (to.meta.requiresAuth && !auth.isAuthenticated) {
         if (to.path.includes('/contact')) {
             const coachId = to.params.id;
             next(`/coaches/${coachId}`);
         } else {
             next('/auth');
         }
-    } else if (to.meta.requiresUnauth && store.getters.isAuthenticated) {
+    } else if (to.meta.requiresUnauth && auth.isAuthenticated) {
         next('/coaches');
     } else {
         next();

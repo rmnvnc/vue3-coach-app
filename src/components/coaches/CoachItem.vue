@@ -13,25 +13,26 @@
     </li>
 </template>
 
-<script>
-    export default {
-        props: ['id', 'firstName', 'lastName', 'rate', 'areas'],
-        computed: {
-            fullName() {
-                return this.firstName + ' ' + this.lastName;
-            },
-            coachContactLink() {
-                return this.$route.path + '/' + this.id + '/contact'
-            },
-            coachDetailsLink() {
-                return this.$route.path + '/' + this.id
-            },
-            isLoggedIn() {
-                return this.$store.getters.isAuthenticated;
-            }
-        }
-        
-    }
+<script setup>
+    import { computed, defineProps } from 'vue'
+    import { useRoute } from 'vue-router'
+    import { useAuthStore } from '@/stores/auth'
+
+    const props = defineProps({
+        id: String,
+        firstName: String,
+        lastName: String,
+        rate: Number,
+        areas: Array
+    })
+
+    const route = useRoute()
+    const auth = useAuthStore()
+
+    const coachContactLink = computed(() => `${route.path}/${props.id}/contact`)
+    const coachDetailsLink = computed(() => `${route.path}/${props.id}`)
+    const isLoggedIn = computed(() => auth.isAuthenticated)
+    const fullName = computed(() => {return props.firstName + ' ' + props.lastName})
 </script>
 
 <style scoped>

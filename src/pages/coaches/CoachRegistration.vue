@@ -6,20 +6,18 @@
 
 </template>
 
-<script>
-import coachForm from '../../components/coaches/CoachForm.vue'
+<script setup>
+    import { useRouter } from 'vue-router'
+    import { useCoachesStore } from '@/stores/coaches'
+    import CoachForm from '@/components/coaches/CoachForm.vue'
 
-export default {
-    components: {
-        coachForm
-    },
-    methods: {
-        saveData(data) {
-            this.$store.dispatch('coaches/registerCoach', data);
-            this.$router.replace('/coaches');
-        }
+    const router = useRouter()
+    const coachesStore = useCoachesStore()
+
+    function saveData(data) {
+        coachesStore.registerCoach(data)
+        router.replace('/coaches')
     }
-}
 </script>
 
 <style scoped>

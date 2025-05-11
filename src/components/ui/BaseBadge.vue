@@ -4,15 +4,21 @@
     </span>
 </template>
 
-<script>
-export default {
-    props: ['type', 'title'],
-    computed: {
-        text() {
-            return this.title.toUpperCase();
-        }
-    }
-}
+<script setup>
+import { computed } from 'vue'
+
+const props = defineProps({
+  type: {
+    type: String,
+    required: true
+  },
+  title: {
+    type: String,
+    required: true
+  }
+})
+
+const text = computed(() => props.title.toUpperCase())
 </script>
 
 <style scoped>
