@@ -9,13 +9,14 @@
                     <h2>Requests received</h2>
                 </header>
                 <base-spinner v-if="isLoading"></base-spinner>
-                <ul v-else-if="hasRequests && !isLoading">
+                <ul v-else-if="receivedRequests.length > 0 && !isLoading">
                     <request-item v-for="req in receivedRequests" 
                         :key="req.id" 
                         :email="req.userEmail" 
                         :message="req.message">
                     </request-item>
                 </ul>
+                <h3 v-else-if="!coaches.isCoach">You need to be registered as coach</h3>
                 <h3 v-else>You haven't received any requests yet</h3>
             </base-card>
         </section>
@@ -23,17 +24,19 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRequestsStore } from '@/stores/requests'
+import { useCoachesStore } from '@/stores/coaches'
+
 import RequestItem from '@/components/requests/RequestItem.vue'
 
 const requests = useRequestsStore()
+const coaches = useCoachesStore()
 
 const isLoading = ref(false)
 const error = ref(null)
 
-const receivedRequests = requests.filteredRequests
-const hasRequests = requests.hasRequests
+const receivedRequests = computed(() =>requests.filteredRequests)
 
 onMounted(async () => {
   isLoading.value = true

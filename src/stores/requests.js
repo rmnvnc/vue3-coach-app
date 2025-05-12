@@ -9,6 +9,11 @@ export const useRequestsStore = defineStore('requests', () => {
   const auth = useAuthStore()
   const token = computed(() => auth.token)
   const userId = computed(() => auth.userId)
+  const lastFetch = ref(null)
+
+    function setFetchTimestamp() {
+        lastFetch.value = new Date().getTime();
+    }
 
   const contactCoach = async (payload) => {
     const newRequest = {
@@ -33,7 +38,14 @@ export const useRequestsStore = defineStore('requests', () => {
     requests.value.push(newRequest)
   }
 
-  const fetchRequests = async () => {
+  const fetchRequests = async (options = {}) => {
+    const { forceRefresh = false } = options
+    const currentTimestamp = new Date().getTime()
+
+    if ( !forceRefresh && lastFetch.value && (currentTimestamp - lastFetch.value) / 1000 < 60) {
+        return
+    }
+
     const response = await fetch(`${config.firebaseDB}/requests/${userId.value}.json?auth=${token.value}`)
     const responseData = await response.json()
 
@@ -53,19 +65,18 @@ export const useRequestsStore = defineStore('requests', () => {
     }
 
     requests.value = loadedRequests
+    setFetchTimestamp()
   }
 
   const filteredRequests = computed(() =>
     requests.value.filter((req) => req.coachId === userId.value)
   )
 
-  const hasRequests = computed(() => filteredRequests.value.length > 0)
 
   return {
     requests,
     contactCoach,
     fetchRequests,
-    filteredRequests,
-    hasRequests
+    filteredRequests
   }
 })
