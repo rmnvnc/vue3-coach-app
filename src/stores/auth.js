@@ -19,6 +19,7 @@ export const useAuthStore = defineStore('auth', () => {
     const isAuthenticated = computed(() => !!user.token)
 
     const setUser = async ({ token: t, userId: id }) => {
+        isAuthResolved.value = false;
         didAutoLogout.value = false;
         user.token = t;
         user.userId = id;
@@ -45,7 +46,7 @@ export const useAuthStore = defineStore('auth', () => {
         } catch {
             user.coach = null
         }
-
+        
         isAuthResolved.value = true;
     }
 
@@ -130,7 +131,6 @@ export const useAuthStore = defineStore('auth', () => {
         const expiresIn = +tokenExpiration - new Date().getTime();
 
         if (expiresIn < 0) {
-            isAuthResolved.value = true;
             return;
         }
         
@@ -143,8 +143,6 @@ export const useAuthStore = defineStore('auth', () => {
                 token: storedToken,
                 userId: storedUserId
             })
-        } else {
-            isAuthResolved.value = true;
         }
     }
 

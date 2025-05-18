@@ -10,12 +10,15 @@
                 <li v-else>
                     <router-link to="/auth">Log in</router-link>
                 </li>
-                <li class="user-info" v-if="isAuthenticated">
-                    {{ user.email }}
+                <li v-if="!isAuthResolved && isAuthenticated"  class="user-info user-info--skeleton">
+                    <h2>&nbsp;</h2>
+                    <span>&nbsp;</span>
+                </li>
+                <li class="user-info" v-else-if="isAuthenticated">
+                    <h2>{{ user.email }}</h2>
                     <span v-if="user.coach">
                         {{ user.coach.firstName }}  {{ user.coach.lastName }}
                     </span>
-                    <span v-else>NOT COACH</span>
                 </li>
                 <li v-if="isAuthenticated">
                     <base-button @click="logOut">Logout</base-button>
@@ -32,7 +35,7 @@
 
     const router = useRouter()
 
-    const { isAuthenticated, user } = storeToRefs(useAuthStore())
+    const { isAuthResolved, isAuthenticated, user } = storeToRefs(useAuthStore())
     const { logout } = useAuthStore()
 
     const logOut = () => {
@@ -103,5 +106,35 @@ li {
 
 .user-info {
     color: white;
+    display: flex;
+    flex-direction: column;
+}
+
+.user-info h2 {
+    font-size: 16px;
+    margin-block: 0px;
+}
+.user-info span {
+    font-size: 14px;
+}
+
+.user-info--skeleton {
+    gap: 4px;
+}
+.user-info--skeleton > * {
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    animation: pulse 1.5s infinite ease-in-out;
+}
+.user-info--skeleton h2 {
+    width: 120px;
+}
+.user-info--skeleton span {
+    width: 100px;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: .5 }
+    50% { opacity: .1 }
 }
 </style>

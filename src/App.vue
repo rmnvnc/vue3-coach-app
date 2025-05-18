@@ -1,15 +1,10 @@
 <template>
-    <div v-if="!isAuthResolved">
-        Loading ...
-    </div>
-    <template v-else >
-        <the-header></the-header>
-        <router-view v-slot="slotProps">
-            <transition name="route" mode="out-in">
-                <component :is="slotProps.Component"></component>
-            </transition>
-        </router-view>
-    </template>
+    <the-header></the-header>
+    <router-view v-slot="slotProps">
+        <transition name="route" mode="out-in">
+            <component :is="slotProps.Component"></component>
+        </transition>
+    </router-view>
 </template>
   
 <script setup>
@@ -23,7 +18,7 @@
     const auth = useAuthStore()
     const router = useRouter()
 
-    const { isAuthResolved, didAutoLogout} = storeToRefs(auth)
+    const {didAutoLogout} = storeToRefs(auth)
 
     onMounted(() => {
         auth.autoLogin();
