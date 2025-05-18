@@ -5,10 +5,9 @@ import { config } from '@/config'
 
 export const useRequestsStore = defineStore('requests', () => {
   const requests = ref([])
-
   const auth = useAuthStore()
-  const token = computed(() => auth.token)
-  const userId = computed(() => auth.userId)
+  const token = computed(() => auth.user.token)
+  const userId = computed(() => auth.user.userId)
   const lastFetch = ref(null)
 
     function setFetchTimestamp() {

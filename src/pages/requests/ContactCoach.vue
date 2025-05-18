@@ -5,6 +5,9 @@
     <base-dialog :show="isLoading" title="Authenticating..." fixed>
         <base-spinner></base-spinner>
     </base-dialog>
+    <base-dialog :show="!isLoading && sent" title="Sent" @close="handleSent">
+        <p>Sent successfully</p>
+    </base-dialog>
     <form @submit.prevent="submitForm">
         <div class="form-control">
             <label for="email">Your E-Mail</label>
@@ -31,6 +34,7 @@ const message = ref('')
 const formIsValid = ref(true)
 const isLoading = ref(false)
 const error = ref(null)
+const sent = ref(false)
 
 const route = useRoute()
 const router = useRouter()
@@ -57,7 +61,9 @@ async function submitForm() {
             coachId: route.params.id
         })
 
-        router.replace('/coaches')
+        email.value = '',
+        message.value = '',
+        sent.value = true
     } catch (err) {
         error.value = err.message || 'Failed to send request'
     } finally {
@@ -67,6 +73,10 @@ async function submitForm() {
 
 function handleError() {
     error.value = null
+}
+
+function handleSent() {
+    sent.value = false
 }
 </script>
 

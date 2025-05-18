@@ -1,29 +1,36 @@
 <template>
-  <the-header></the-header>
-  <router-view v-slot="slotProps">
-    <transition name="route" mode="out-in">
-        <component :is="slotProps.Component"></component>
-    </transition>
-  </router-view>
+    <div v-if="!isAuthResolved">
+        Loading ...
+    </div>
+    <template v-else >
+        <the-header></the-header>
+        <router-view v-slot="slotProps">
+            <transition name="route" mode="out-in">
+                <component :is="slotProps.Component"></component>
+            </transition>
+        </router-view>
+    </template>
 </template>
   
 <script setup>
     import TheHeader from './components/layout/TheHeader.vue'
 
     import { useAuthStore } from '@/stores/auth'
-    import { watch, computed, onMounted } from 'vue'
+    import { storeToRefs } from 'pinia'
+    import { watch, onMounted } from 'vue'
     import { useRouter } from 'vue-router'
 
     const auth = useAuthStore()
     const router = useRouter()
 
+    const { isAuthResolved, didAutoLogout} = storeToRefs(auth)
+
     onMounted(() => {
         auth.autoLogin();
     })
 
-    const didAutoLogout = computed(() => auth.didAutoLogout)
-
     watch(didAutoLogout, (newVal, oldVal) => {
+        console.warn(newVal + ' ' + oldVal)
         if (newVal && newVal !== oldVal) {
             router.replace('/coaches')
         }

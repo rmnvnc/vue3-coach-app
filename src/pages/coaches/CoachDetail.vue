@@ -53,9 +53,7 @@
 
     const isLoading = ref(true)
     
-    const selectedCoach = computed(() => 
-        coaches.coaches.find(coach => coach.id === id.value)
-    )
+    const selectedCoach = ref(null)
 
     const handleError = () => {
         error.value = null
@@ -74,12 +72,10 @@
     const isLoggedIn = computed(() => auth.isAuthenticated)
 
     onMounted(async () => {
-        if (!coaches.hasCoaches.value) {
-            try {
-                await coaches.loadCoaches()
-            } catch (err) {
-                error.value = err.message || 'Failed to load coach data.'
-            }
+        try {
+            selectedCoach.value = await coaches.loadCoach(id.value)
+        } catch (err) {
+            error.value = err.message || 'Failed to load coach data.'
         }
         isLoading.value = false
     })

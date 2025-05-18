@@ -4,14 +4,21 @@
             <h1><router-link to="/">Find a coach</router-link></h1>
             <ul>
                 <li><router-link to="/coaches">All coaches</router-link></li>
-                <li v-if="isLoggedIn">
+                <li v-if="isAuthenticated">
                     <router-link to="/requests">Requests</router-link>
                 </li>
                 <li v-else>
                     <router-link to="/auth">Log in</router-link>
                 </li>
-                <li v-if="isLoggedIn">
-                    <base-button @click="logout">Logout</base-button>
+                <li class="user-info" v-if="isAuthenticated">
+                    {{ user.email }}
+                    <span v-if="user.coach">
+                        {{ user.coach.firstName }}  {{ user.coach.lastName }}
+                    </span>
+                    <span v-else>NOT COACH</span>
+                </li>
+                <li v-if="isAuthenticated">
+                    <base-button @click="logOut">Logout</base-button>
                 </li>
             </ul>
         </nav>
@@ -19,17 +26,17 @@
 </template>
 
 <script setup>
-    import { computed } from 'vue'
     import { useRouter } from 'vue-router'
     import { useAuthStore } from '@/stores/auth'
+    import { storeToRefs } from 'pinia'
 
-    const auth = useAuthStore()
     const router = useRouter()
 
-    const isLoggedIn = computed(() => auth.isAuthenticated)
+    const { isAuthenticated, user } = storeToRefs(useAuthStore())
+    const { logout } = useAuthStore()
 
-    const logout = () => {
-        auth.logout()
+    const logOut = () => {
+        logout()
         router.replace('/coaches')
     }
 </script>
@@ -92,5 +99,9 @@ header ul {
 
 li {
   margin: 0 0.5rem;
+}
+
+.user-info {
+    color: white;
 }
 </style>

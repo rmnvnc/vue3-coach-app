@@ -16,7 +16,7 @@
                         :message="req.message">
                     </request-item>
                 </ul>
-                <h3 v-else-if="!coaches.isCoach">You need to be registered as coach</h3>
+                <h3 v-else-if="!user.coach">You need to be registered as coach</h3>
                 <h3 v-else>You haven't received any requests yet</h3>
             </base-card>
         </section>
@@ -26,12 +26,13 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { useRequestsStore } from '@/stores/requests'
-import { useCoachesStore } from '@/stores/coaches'
+import { useAuthStore } from '@/stores/auth'
+import { storeToRefs } from 'pinia'
 
 import RequestItem from '@/components/requests/RequestItem.vue'
 
 const requests = useRequestsStore()
-const coaches = useCoachesStore()
+const { user } = storeToRefs(useAuthStore())
 
 const isLoading = ref(false)
 const error = ref(null)

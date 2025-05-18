@@ -1,24 +1,53 @@
 import {defineStore} from 'pinia'
-import {ref, computed} from 'vue'
+import {ref, computed, reactive} from 'vue'
 import { config } from '@/config'
 
 let logoutTimer
 
 export const useAuthStore = defineStore('auth', () => {
     const apiKey = config.firebaseAPIkey
-    const token = ref(null)
-    const userId = ref(null)
     const didAutoLogout = ref(false)
+    const isAuthResolved = ref(false)
+    const user = reactive({  
+        token: null,
+        userId: null,
+        email: null,
+        coach: null
+    })
 
-    const isAuthenticated = computed(() => !!token.value)
+    const isAuthenticated = computed(() => !!user.token)
 
-    const setUser = ({ token: t, userId: id }) => {
-        token.value = t;
-        userId.value = id;
+    const setUser = async ({ token: t, userId: id }) => {
         didAutoLogout.value = false;
+        user.token = t;
+        user.userId = id;
+        user.email = null
+        user.coach = null;
+
+        // If LOGOUT
+        if (!t || !id) {
+            isAuthResolved.value = true;
+            return
+        }
+
+        // getting EMAIL
+        const resUser = await fetch(`https://identitytoolkit.googleapis.com/v1/accounts:lookup?key=${config.firebaseAPIkey}`, { method: 'POST', 
+            headers: { 'Content-Type': 'application/json' }, 
+            body: JSON.stringify({ idToken: t }),
+         })
+        user.email = (await resUser.json())?.users?.[0]?.email ?? null
+
+        // getting COACH data
+        const res = await fetch(`${config.firebaseDB}/coaches/${id}.json`)
+        const data = await res.json()
+        user.coach = data?.firstName && data?.lastName 
+            ? { firstName: data.firstName, lastName: data.lastName }
+            : null
+
+        isAuthResolved.value = true;
     }
 
-    const setAutoLogout = ({}) => {
+    const setAutoLogout = () => {
         didAutoLogout.value = true;
     }
 
@@ -91,7 +120,7 @@ export const useAuthStore = defineStore('auth', () => {
         setAutoLogout();
     }
 
-    const autoLogin = () => {
+    const autoLogin = async () => {
         const storedToken = localStorage.getItem('token');
         const storedUserId = localStorage.getItem('userId');
         const tokenExpiration = localStorage.getItem('tokenExpiration');
@@ -99,6 +128,7 @@ export const useAuthStore = defineStore('auth', () => {
         const expiresIn = +tokenExpiration - new Date().getTime();
 
         if (expiresIn < 0) {
+            isAuthResolved.value = true;
             return;
         }
         
@@ -107,18 +137,20 @@ export const useAuthStore = defineStore('auth', () => {
         }, expiresIn)
 
         if (storedToken && storedUserId) {
-            setUser({
+            await setUser({
                 token: storedToken,
                 userId: storedUserId
             })
+        } else {
+            isAuthResolved.value = true;
         }
     }
 
     return {
-        token,
-        userId,
-        didAutoLogout,
         isAuthenticated,
+        user,
+        isAuthResolved,
+        didAutoLogout,
         login,
         signup,
         logout,

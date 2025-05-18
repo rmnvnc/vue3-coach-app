@@ -10,8 +10,8 @@
             <base-card>
                 <div class="controls">
                     <base-button mode="outline" @click="loadCoaches(true)">Refresh</base-button>
-                    <base-button link to="/auth?redirect=register" v-if="!isLoggedIn">Log in to register as a coach</base-button>
-                    <base-button link to="/register" v-if="isLoggedIn && !isCoach && !isLoading">Register as a coach</base-button>
+                    <base-button link to="/auth?redirect=register" v-if="!isAuthenticated">Log in to register as a coach</base-button>
+                    <base-button link to="/register" v-if="isAuthenticated && !user.coach && !isLoading">Register as a coach</base-button>
                 </div>
                 <div v-if="isLoading"><base-spinner></base-spinner></div>
                 
@@ -38,12 +38,12 @@
     import {ref, reactive, computed, onMounted} from 'vue'
     import { useCoachesStore } from '@/stores/coaches'
     import { useAuthStore } from '@/stores/auth'
+    import { storeToRefs } from 'pinia'
 
     const coaches = useCoachesStore()
-    const auth = useAuthStore()
 
-    const isCoach = coaches.isCoach
-    const isLoggedIn = computed(() => auth.isAuthenticated)
+    const { isAuthenticated, user } = storeToRefs(useAuthStore())
+    
     const isLoading = ref(false)
     const error = ref(null)
     const activeFilters = reactive({
