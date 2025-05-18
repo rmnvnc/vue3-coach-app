@@ -42,7 +42,9 @@ export const useAuthStore = defineStore('auth', () => {
         // getting COACH data
         try {
             const coachData = await getCoachById(id)
-            user.coach = coachData ?? null
+            user.coach = coachData?.firstName && coachData?.lastName
+                ? coachData
+                : null
         } catch {
             user.coach = null
         }

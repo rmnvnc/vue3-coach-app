@@ -17,7 +17,8 @@ export const useRequestsStore = defineStore('requests', () => {
   const contactCoach = async (payload) => {
     const newRequest = {
       userEmail: payload.email,
-      message: payload.message
+      message: payload.message,
+      createdAt: Date.now()
     }
 
     const response = await fetch(`${config.firebaseDB}/requests/${payload.coachId}.json?auth=${token.value}`, {

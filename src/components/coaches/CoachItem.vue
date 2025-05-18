@@ -1,6 +1,7 @@
 <template>
     <li>
         <h3>{{ fullName }}</h3>
+        <small>Created: {{ formatTimestamp(createdAt) }}</small>
         <h4>${{ rate }}/hour</h4>
         <div>
             <base-badge v-for="area in areas" :key="area" :title="area"  :type="area"></base-badge>
@@ -23,7 +24,8 @@
         firstName: String,
         lastName: String,
         rate: Number,
-        areas: Array
+        areas: Array,
+        createdAt: Number
     })
 
     const route = useRoute()
@@ -33,6 +35,11 @@
     const coachDetailsLink = computed(() => `${route.path}/${props.id}`)
     const isLoggedIn = computed(() => auth.isAuthenticated)
     const fullName = computed(() => {return props.firstName + ' ' + props.lastName})
+
+    function formatTimestamp(timestamp) {
+        const date = new Date(timestamp)
+        return date.toLocaleString('sk-SK') // slovenský formát: DD.MM.YYYY, HH:MM:SS
+    }
 </script>
 
 <style scoped>

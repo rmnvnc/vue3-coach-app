@@ -1,4 +1,4 @@
-import {defineStore} from 'pinia'
+import {defineStore, storeToRefs} from 'pinia'
 import {ref, computed} from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { config } from '@/config'
@@ -6,6 +6,7 @@ import { config } from '@/config'
 
 export const useCoachesStore = defineStore('coaches', () => {
     const auth = useAuthStore()
+    const { isAuthResolved} = storeToRefs(auth)
     const token = computed(() => auth.user.token)
     const userId = computed(() => auth.user.userId)
     const coaches = ref([])
@@ -18,20 +19,21 @@ export const useCoachesStore = defineStore('coaches', () => {
     }
 
     const addCoachLocally = (payload) => {
-        coaches.value.push(payload)
+        coaches.value.unshift(payload)
     }
     const setCoaches = (payload) => {
         coaches.value = payload
     }
 
     const registerCoach = async(data) => {
-        
+        isAuthResolved.value = false;
         const coachData = {
             firstName: data.first,
             lastName: data.last,
             description: data.desc,
             areas: data.areas,
-            hourlyRate: data.rate
+            hourlyRate: data.rate,
+            createdAt: Date.now()
         }
 
         const response = await fetch(`${config.firebaseDB}/coaches/${userId.value}.json?auth=${token.value}`, {
@@ -51,6 +53,7 @@ export const useCoachesStore = defineStore('coaches', () => {
         auth.user.coach = {
             ...coachData
         }
+        isAuthResolved.value = true;
 
     }
 
@@ -61,24 +64,20 @@ export const useCoachesStore = defineStore('coaches', () => {
             return
         }
 
-        const response = await fetch(`${config.firebaseDB}/coaches.json`)
-        const responseData = await response.json()
+        const response = await fetch(
+            `${config.firebaseDB}/coaches.json?orderBy="createdAt"`
+        )
+        const data = await response.json()
 
-        if (!response.ok) {
-            throw new Error(responseData.message || 'Failed to fetch!')
+        if (!response.ok || !data) {
+            throw new Error(data?.message || 'Failed to fetch!')
         }
 
-        const loadedCoaches = []
+        const coaches = Object.entries(data)
+            .map(([id, coach]) => ({ id, ...coach }))
+            .sort((a, b) => b.createdAt - a.createdAt)
 
-        for (const key in responseData) {
-            const coach = {
-                id: key,
-                ...responseData[key]
-            }
-            loadedCoaches.push(coach)
-        }
-
-        setCoaches(loadedCoaches)
+        setCoaches(coaches)
         setFetchTimestamp()
     }
 

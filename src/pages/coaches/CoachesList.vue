@@ -11,7 +11,7 @@
                 <div class="controls">
                     <base-button mode="outline" @click="loadCoaches(true)">Refresh</base-button>
                     <base-button link to="/auth?redirect=register" v-if="!isAuthenticated">Log in to register as a coach</base-button>
-                    <base-button link to="/register" v-if="isAuthenticated && !user.coach && !isLoading">Register as a coach</base-button>
+                    <base-button link to="/register" v-if="isAuthResolved && isAuthenticated && !user.coach && !isLoading">Register as a coach</base-button>
                 </div>
                 <div v-if="isLoading"><base-spinner></base-spinner></div>
                 
@@ -23,7 +23,8 @@
                         :first-name="coach.firstName"
                         :last-name="coach.lastName"
                         :rate="coach.hourlyRate"
-                        :areas="coach.areas">
+                        :areas="coach.areas"
+                        :createdAt="coach.createdAt">
                     </coach-item>
                 </ul>
                 <h3 v-else>No coaches found :/</h3>
@@ -42,7 +43,7 @@
 
     const coaches = useCoachesStore()
 
-    const { isAuthenticated, user } = storeToRefs(useAuthStore())
+    const { isAuthResolved, isAuthenticated, user } = storeToRefs(useAuthStore())
     
     const isLoading = ref(false)
     const error = ref(null)
