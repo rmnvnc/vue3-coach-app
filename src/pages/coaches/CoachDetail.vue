@@ -43,7 +43,7 @@
     import { useRoute } from 'vue-router'
     import { useCoachesStore } from '@/stores/coaches'
     import { useAuthStore } from '@/stores/auth'
-
+    import { getCoachById } from '@/composables/useCoach'
 
     const auth = useAuthStore()
     const coaches = useCoachesStore()
@@ -73,7 +73,7 @@
 
     onMounted(async () => {
         try {
-            selectedCoach.value = await coaches.loadCoach(id.value)
+            selectedCoach.value = await getCoachById(id.value)
         } catch (err) {
             error.value = err.message || 'Failed to load coach data.'
         }

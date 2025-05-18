@@ -1,6 +1,7 @@
 import {defineStore} from 'pinia'
 import {ref, computed, reactive} from 'vue'
 import { config } from '@/config'
+import { getCoachById } from '@/composables/useCoach'
 
 let logoutTimer
 
@@ -38,11 +39,12 @@ export const useAuthStore = defineStore('auth', () => {
         user.email = (await resUser.json())?.users?.[0]?.email ?? null
 
         // getting COACH data
-        const res = await fetch(`${config.firebaseDB}/coaches/${id}.json`)
-        const data = await res.json()
-        user.coach = data?.firstName && data?.lastName 
-            ? { firstName: data.firstName, lastName: data.lastName }
-            : null
+        try {
+            const coachData = await getCoachById(id)
+            user.coach = coachData ?? null
+        } catch {
+            user.coach = null
+        }
 
         isAuthResolved.value = true;
     }

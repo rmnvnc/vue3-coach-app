@@ -52,24 +52,6 @@ export const useCoachesStore = defineStore('coaches', () => {
             ...coachData
         }
 
-        ////
-        //// NEZABUDNUT UPDANUT USER.COACH, az po refersh sa naplni
-        ///
-    }
-
-
-    const loadCoach = async(coachId) => {
-        const response = await fetch(`${config.firebaseDB}/coaches/${coachId}.json`)
-        const responseData = await response.json()
-
-        if (!response.ok) {
-            throw new Error(responseData.message || 'Failed to fetch!')
-        }
-
-        return {
-            id: coachId,
-            ...responseData,
-        }
     }
 
     const loadCoaches = async(payload = {}) => {
@@ -105,8 +87,7 @@ export const useCoachesStore = defineStore('coaches', () => {
         lastFetch,
         hasCoaches,
         registerCoach,
-        loadCoaches,
-        loadCoach
+        loadCoaches
     }
 })
 
