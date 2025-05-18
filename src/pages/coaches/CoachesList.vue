@@ -16,7 +16,9 @@
                 <div v-if="isLoading"><base-spinner></base-spinner></div>
                 
                 <ul v-else-if="hasCoaches">
+                    <h5 v-if="!filteredCoaches.length">No coaches for selected Filter</h5>
                     <coach-item 
+                        v-else
                         v-for="coach in filteredCoaches" 
                         :key="coach.id" 
                         :id="coach.id" 
