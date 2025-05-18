@@ -67,15 +67,10 @@ export const useRequestsStore = defineStore('requests', () => {
     setFetchTimestamp()
   }
 
-  const filteredRequests = computed(() =>
-    requests.value.filter((req) => req.coachId === userId.value)
-  )
-
 
   return {
     requests,
     contactCoach,
-    fetchRequests,
-    filteredRequests
+    fetchRequests
   }
 })

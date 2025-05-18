@@ -37,7 +37,7 @@ const { user } = storeToRefs(useAuthStore())
 const isLoading = ref(false)
 const error = ref(null)
 
-const receivedRequests = computed(() =>requests.filteredRequests)
+const receivedRequests = computed(() =>requests.requests)
 
 onMounted(async () => {
   isLoading.value = true
