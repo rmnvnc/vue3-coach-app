@@ -84,5 +84,10 @@
 
 
 <style scoped>
-
+h2 {
+    margin-top: 0px;
+}
+h3, p {
+    margin-bottom: 0px;
+}
 </style>

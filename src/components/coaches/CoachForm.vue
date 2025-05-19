@@ -37,7 +37,9 @@
             <input type="number" id="rate" v-model.number="rate.val" @blur="clearValidity('rate')">
         </div>
         <p v-if="!formIsValid">Please fix the above erros and submit again.</p>
-        <base-button>Register</base-button>
+        <div class="controls">
+            <base-button>Register</base-button>
+        </div>
     </form>
 </template>
 
@@ -138,7 +140,9 @@ textarea {
   display: block;
   width: 100%;
   border: 1px solid #ccc;
-  font: inherit;
+  border-radius: var(--radius-small);
+  padding: 6px 12px;
+  max-width: 100%;
 }
 
 input:focus,
@@ -176,5 +180,9 @@ h3 {
 .invalid input,
 .invalid textarea {
   border: 1px solid red;
+}
+
+.controls {
+    margin-top: 1rem;
 }
 </style>

@@ -18,9 +18,10 @@
                     <p v-if="!password.isValid">Password must be at least 6 characters long.</p>
                     <input type="password" id="password" v-model.trim="password.val" @blur="clearValidity('password')">
                 </div>
-                <base-button>{{submitButtonCaption}}</base-button>
-                <base-button type="button" @click="switchAuthMode" mode="flat">{{switchModeButtonCaption}}</base-button>
-
+                <div class="controls">
+                    <base-button>{{submitButtonCaption}}</base-button>
+                    <base-button type="button" @click="switchAuthMode" mode="flat">{{switchModeButtonCaption}}</base-button>
+                </div>
             </form>
         </base-card>
     </div>
@@ -122,9 +123,6 @@
 </script>
 
 <style scoped>
-form {
-    margin: 1rem;
-}
 
 .form-control {
   margin-bottom: 1rem;
@@ -146,7 +144,9 @@ textarea {
   width: 100%;
   font: inherit;
   border: 1px solid #ccc;
-  padding: 0.15rem;
+  border-radius: var(--radius-small);
+  padding: 6px 12px;
+  max-width: 100%;
 }
 
 input:focus,
@@ -163,5 +163,12 @@ textarea:focus {
 .invalid input,
 .invalid textarea {
   border: 1px solid red;
+}
+
+.controls {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-top: 2rem;
 }
 </style>

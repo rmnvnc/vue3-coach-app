@@ -82,10 +82,12 @@ function handleSent() {
 
 <style scoped>
 form {
-  margin-top: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 12px;
-  padding: 1rem;
+
+border: 1px solid var(--color-border);
+padding: 1rem;
+border-radius: var(--radius-base);
+background-color: var(--color-surface);
+box-shadow: var(--shadow-base);
 }
 
 .form-control {
@@ -105,6 +107,9 @@ textarea {
   font: inherit;
   border: 1px solid #ccc;
   padding: 0.15rem;
+  border-radius: var(--radius-small);
+  padding: 6px 12px;
+  max-width: 100%;
 }
 
 input:focus,
@@ -121,5 +126,6 @@ textarea:focus {
 
 .actions {
   text-align: center;
+  margin-top: 1rem;
 }
 </style>

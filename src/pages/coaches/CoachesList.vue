@@ -103,6 +103,8 @@ ul {
 
 .controls {
   display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
   justify-content: space-between;
 }
 </style>

@@ -9,6 +9,7 @@ import BaseBadge from './components/ui/BaseBadge.vue'
 import BaseSpinner from './components/ui/BaseSpinner.vue'
 // import BaseDialog from './components/ui/BaseDialog.vue'
 
+import './assets/styles/_variables.css'
 
 const BaseDialog = defineAsyncComponent(() => import('./components/ui/BaseDialog.vue'));
 

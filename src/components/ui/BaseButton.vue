@@ -9,18 +9,18 @@
 
 <script setup>
 const props = defineProps({
-  mode: {
-    type: String,
-    default: null
-  },
-  link: {
-    type: Boolean,
-    default: false
-  },
-  to: {
-    type: String,
-    default: '/'
-  }
+    mode: {
+        type: String,
+        default: null
+    },
+    link: {
+        type: Boolean,
+        default: false
+    },
+    to: {
+        type: String,
+        default: '/'
+    }
 })
 </script>
 
@@ -28,42 +28,97 @@ const props = defineProps({
 <style scoped>
 button,
 a {
-  text-decoration: none;
-  padding: 0.75rem 1.5rem;
-  font: inherit;
-  background-color: #3a0061;
-  border: 1px solid #3a0061;
-  color: white;
-  cursor: pointer;
-  border-radius: 30px;
-  margin-right: 0.5rem;
-  display: inline-block;
+    display: inline-block;
+    background-color: var(--color-primary);
+    color: var(--color-inverted-text);
+    text-decoration: none;
+    border: none;
+    padding: 0.625rem 1.25rem;
+    border-radius: var(--radius-base);
+    font-weight: 600;
+    font-size: 1rem;
+    font-family: var(--font-family-base);
+    cursor: pointer;
+    transition: background-color var(--transition-fast), box-shadow var(--transition-fast);
+    box-shadow: var(--shadow-base);
 }
 
-a:hover,
-a:active,
+@media (max-width: 768px) {
+    button,
+    a {
+        border-radius: var(--radius-small);
+    }
+}
+
 button:hover,
-button:active {
-  background-color: #270041;
-  border-color: #270041;
+a:hover {
+    background-color: var(--color-primary-hover);
+    box-shadow: var(--shadow-hover);
 }
 
-.flat {
-  background-color: transparent;
-  color: #3a0061;
-  border: none;
+button:active,
+a:active {
+    background-color: var(--color-primary-active);
 }
 
-.outline {
-  background-color: transparent;
-  border-color: #270041;
-  color: #270041;
+button.flat,
+a.flat {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: none;
+    box-shadow: none;
+    padding: 0.625rem 1.25rem;
 }
 
-.flat:hover,
-.flat:active,
-.outline:hover,
-.outline:active {
-  background-color: #edd2ff;
+button.flat:hover,
+a.flat:hover {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+button.flat:active,
+a.flat:active {
+    background-color: rgba(59, 130, 246, 0.2);
+}
+
+button.outline,
+a.outline {
+    background-color: transparent;
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
+    padding: 0.5625rem 1.125rem;
+    box-shadow: none;
+}
+
+button.outline:hover,
+a.outline:hover {
+    background-color: rgba(59, 130, 246, 0.05);
+}
+
+button.outline:active,
+a.outline:active {
+    background-color: rgba(59, 130, 246, 0.1);
+}
+
+button.white-outline,
+a.white-outline {
+    background-color: transparent;
+    color: var(--color-inverted-text);
+    border: 2px solid var(--color-inverted-text);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-base);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+button.white-outline:hover,
+a.white-outline:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+button.white-outline:active,
+a.white-outline:active {
+    background-color: rgba(255, 255, 255, 0.2);
 }
 </style>

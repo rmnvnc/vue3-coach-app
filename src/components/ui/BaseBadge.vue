@@ -8,14 +8,14 @@
 import { computed } from 'vue'
 
 const props = defineProps({
-  type: {
-    type: String,
-    required: true
-  },
-  title: {
-    type: String,
-    required: true
-  }
+    type: {
+        type: String,
+        required: true
+    },
+    title: {
+        type: String,
+        required: true
+    }
 })
 
 const text = computed(() => props.title.toUpperCase())
@@ -23,27 +23,30 @@ const text = computed(() => props.title.toUpperCase())
 
 <style scoped>
 .badge {
-  background-color: #ccc;
-  color: #252525;
-  border-radius: 30px;
-  padding: 0.25rem .5rem;
-  display: inline-block;
-  margin-right: 0.5rem;
-  font-size: 12px;
+    display: inline-block;
+    background-color: var(--color-border);
+    color: var(--color-text);
+    border-radius: var(--radius-circle);
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1;
+    margin-right: 0.5rem;
+    white-space: nowrap;
 }
 
-.frontend {
-  background-color: #3d008d;
-  color: white;
+.badge.frontend {
+    background-color: #3b82f6;
+    color: var(--color-inverted-text);
 }
 
-.backend {
-  background-color: #71008d;
-  color: white;
+.badge.backend {
+    background-color: #8b5cf6;
+    color: var(--color-inverted-text);
 }
 
-.career {
-  background-color: #8d006e;
-  color: white;
+.badge.career {
+    background-color: #ec4899;
+    color: var(--color-inverted-text);
 }
 </style>
