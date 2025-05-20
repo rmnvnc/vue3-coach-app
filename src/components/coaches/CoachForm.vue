@@ -44,7 +44,7 @@
 </template>
 
 <script setup>
-    import { reactive, ref } from 'vue'
+    import { reactive, ref, toRaw } from 'vue'
 
     const emit = defineEmits(['save-data'])
 
@@ -111,7 +111,8 @@
             last: lastName.val,
             desc: description.val,
             rate: rate.val,
-            areas: areas.val
+            // clearing from Proxy Array
+            areas: [...toRaw(areas.val)]
         }
 
         emit('save-data', formData)

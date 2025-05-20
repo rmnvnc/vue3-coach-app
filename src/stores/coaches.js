@@ -47,7 +47,7 @@ export const useCoachesStore = defineStore('coaches', () => {
 
         addCoachLocally({ 
             ...coachData, 
-            id: userId 
+            id: userId.value
         })
 
         auth.user.coach = {
