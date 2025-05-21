@@ -1,5 +1,6 @@
 import { createApp, defineAsyncComponent } from 'vue';
 import { createPinia } from 'pinia';
+import { registerSW } from 'virtual:pwa-register'
 
 import router from './router.js'
 import App from './App.vue';
@@ -14,6 +15,13 @@ import './assets/styles/_variables.css'
 const BaseDialog = defineAsyncComponent(() => import('./components/ui/BaseDialog.vue'));
 
 const app = createApp(App);
+
+// PWA – register Service Worker
+registerSW({
+    immediate: true,
+    onNeedRefresh() {},
+    onOfflineReady() {},
+})
 
 app.use(router);
 app.use(createPinia());
