@@ -1,7 +1,7 @@
 <template>
     <header>
         <nav>
-            <h1><router-link to="/">Find a coach V1.0.1</router-link></h1>
+            <h1><router-link to="/">Find a coach</router-link></h1>
             <button class="hamburger" :class="{ open: isMenuOpen }" @click="toggleMenu" aria-label="Toggle menu">
                 <span></span>
                 <span></span>
