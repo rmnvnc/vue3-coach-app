@@ -1,6 +1,7 @@
 import { createApp, defineAsyncComponent } from 'vue';
 import { createPinia } from 'pinia';
 import { registerSW } from 'virtual:pwa-register'
+import { useUpdatePrompt } from '@/stores/useUpdatePrompt'
 
 import router from './router.js'
 import App from './App.vue';
@@ -16,13 +17,6 @@ const BaseDialog = defineAsyncComponent(() => import('./components/ui/BaseDialog
 
 const app = createApp(App);
 
-// PWA – register Service Worker
-registerSW({
-    immediate: true,
-    onNeedRefresh() {},
-    onOfflineReady() {},
-})
-
 app.use(router);
 app.use(createPinia());
 
@@ -33,3 +27,14 @@ app.component('base-spinner', BaseSpinner)
 app.component('base-dialog', BaseDialog)
 
 app.mount('#app');
+
+const updatePrompt = useUpdatePrompt()
+
+// PWA – register Service Worker
+registerSW({
+    immediate: true,
+    onNeedRefresh() {
+        updatePrompt.showPrompt = true
+    },
+    onOfflineReady() {},
+})

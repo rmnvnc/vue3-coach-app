@@ -6,6 +6,10 @@
                 <component :is="slotProps.Component"></component>
             </transition>
         </router-view>
+        <base-dialog :show="updatePrompt.showPrompt" title="Update" fixed>
+            <p>There is new version of app</p>
+            <base-button  @click="updatePrompt.update">Reload</base-button>
+        </base-dialog>
     </div>
 </template>
 
@@ -13,6 +17,7 @@
 import TheHeader from './components/layout/TheHeader.vue'
 
 import { useAuthStore } from '@/stores/auth'
+import { useUpdatePrompt } from '@/stores/useUpdatePrompt'
 import { storeToRefs } from 'pinia'
 import { watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
@@ -21,6 +26,8 @@ const auth = useAuthStore()
 const router = useRouter()
 
 const { didAutoLogout } = storeToRefs(auth)
+
+const updatePrompt = useUpdatePrompt()
 
 onMounted(() => {
     auth.autoLogin();
