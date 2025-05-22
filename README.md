@@ -6,6 +6,12 @@ A Vue 3 application that allows users to register and find coaches. It uses Fire
 
 ---
 
+## 📱 Progressive Web App (PWA) Support
+
+ - This app is a fully functional [Progressive Web App (PWA)](https://web.dev/progressive-web-apps/).
+
+---
+
 ## 🚀 Features
 
 - Coach registration (name, description, hourly rate, expertise areas)
@@ -44,12 +50,7 @@ These will be introduced after completing the core features:
 - Nuxt 3 – for SSR, file-based routing, and hybrid hosting (marketing + app)
 - [Vercel](https://vercel.com/) – for secure deployment and environment variable management
 
-
 ---
-
-Ak chceš, môžem ti aj pripraviť stručný anglický návod, ako nasadiť tvoju Vite/Vue appku na Vercel vrátane .env nastavení. Chceš?
-
-Jasné! Tu máš odporúčaný zápis pre sekciu Planned Technologies v angličtine, vrátane Vercelu:
 
 ## 🧭 Planned Technologies
 
@@ -63,13 +64,6 @@ These will be introduced after completing the core features:
 - [ ] CMS integration (Netlify CMS or Storyblok)
 - [ ] Nuxt 3 – for SSR, file-based routing, and hybrid rendering (marketing + app)
 - [ ] [Vercel](https://vercel.com/) – for secure deployment and environment variable management
-
-
----
-
-Ak chceš, môžem ti aj pripraviť stručný anglický návod, ako nasadiť tvoju Vite/Vue appku na Vercel vrátane .env nastavení. Chceš?
-
-
 
 ---
 
