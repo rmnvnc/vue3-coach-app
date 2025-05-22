@@ -41,25 +41,10 @@ A Vue 3 application that allows users to register and find coaches. It uses Fire
 
 These will be introduced after completing the core features:
 
-- ~~[Pinia](https://pinia.vuejs.org/) – modern state management (replacement for Vuex)~~
-- ~~[Vite](https://vitejs.dev/) – faster build tool (replacement for Webpack)~~
-- ~~Composition API – to restructure logic into composables (replacement for Options API)~~
-- ~~`<script setup>` syntax – for cleaner and more concise components~~
-- TypeScript – for static typing and better DX
-- CMS integration (Netlify CMS or Storyblok)
-- Nuxt 3 – for SSR, file-based routing, and hybrid hosting (marketing + app)
-- [Vercel](https://vercel.com/) – for secure deployment and environment variable management
-
----
-
-## 🧭 Planned Technologies
-
-These will be introduced after completing the core features:
-
 - [x] Vite – faster build tool (replacing Webpack)
-- [ ] Pinia – modern state management (replacing Vuex)
-- [ ] Composition API – to modularize logic into composables (replacing Options API)
-- [ ] `<script setup>` syntax – for cleaner and more concise components
+- [x] Pinia – modern state management (replacing Vuex)
+- [x] Composition API – to modularize logic into composables (replacing Options API)
+- [x] `<script setup>` syntax – for cleaner and more concise components
 - [ ] TypeScript – for static typing and better DX
 - [ ] CMS integration (Netlify CMS or Storyblok)
 - [ ] Nuxt 3 – for SSR, file-based routing, and hybrid rendering (marketing + app)
